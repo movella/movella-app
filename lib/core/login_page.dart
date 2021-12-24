@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:movella_app/core/main_page.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 
 class LoginPage extends StatefulWidget {
@@ -89,6 +91,8 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 onPressed: () {
                                   // TODO: fix
+                                  Navigator.of(context)
+                                      .pushReplacementNamed(MainPage.route);
                                 },
                               ),
                             ),
@@ -164,15 +168,16 @@ class _EmailTextFormFieldState extends State<EmailTextFormField> {
     return TextFormField(
       focusNode: widget.focusNode,
       controller: widget.controller,
+      keyboardType: TextInputType.emailAddress,
       onChanged: (value) {
         _updateSuffixFocus();
       },
       decoration: InputDecoration(
         labelText: 'Email',
-        icon: const Icon(Icons.person),
+        icon: const Icon(MdiIcons.account),
         suffix: IconButton(
           icon: Icon(
-            Icons.close,
+            MdiIcons.close,
             color: _suffixFocused
                 ? Theme.of(context).primaryColor
                 : Theme.of(context).disabledColor,
@@ -234,14 +239,13 @@ class _PasswordTextFormFieldState extends State<PasswordTextFormField> {
       obscureText: _obscureText,
       focusNode: widget.focusNode,
       controller: widget.controller,
+      keyboardType: TextInputType.visiblePassword,
       decoration: InputDecoration(
         labelText: 'Senha',
-        icon: const Icon(Icons.lock),
+        icon: const Icon(MdiIcons.lock),
         suffix: IconButton(
           icon: Icon(
-            _obscureText
-                ? Icons.visibility_outlined
-                : Icons.visibility_off_outlined,
+            _obscureText ? MdiIcons.eye : MdiIcons.eyeOffOutline,
             color: _suffixFocused
                 ? Theme.of(context).primaryColor
                 : Theme.of(context).disabledColor,

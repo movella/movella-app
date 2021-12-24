@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movella_app/constants/colors.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/login_page.dart';
+import 'package:movella_app/core/main_page.dart';
 import 'package:movella_app/core/splash_page.dart';
+
+// TODO: welcome dialog
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -28,10 +31,18 @@ class App extends StatelessWidget {
             ),
           ),
         ),
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all<EdgeInsets>(
+              const EdgeInsets.all(24),
+            ),
+          ),
+        ),
       ),
       routes: {
         SplashPage.route: (context) => const SplashPage(),
         LoginPage.route: (context) => const LoginPage(),
+        MainPage.route: (context) => const MainPage(),
       },
     );
   }
