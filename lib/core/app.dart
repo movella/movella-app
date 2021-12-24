@@ -13,6 +13,7 @@ class App extends StatelessWidget {
       title: Constants.appName,
       theme: ThemeData(
         primarySwatch: ExtendedColors.chilledChilly,
+        textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             padding: MaterialStateProperty.all<EdgeInsets>(
