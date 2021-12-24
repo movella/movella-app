@@ -1,0 +1,34 @@
+{
+  "about": "About Movella",
+  "@about": {
+    "description": "About"
+  },
+  "help": "Help",
+  "@help": {
+    "description": "Help"
+  },
+  "myAccount": "My account",
+  "@myAccount": {
+    "description": "My account"
+  },
+  "myFurniture": "My furniture",
+  "@myFurniture": {
+    "description": "My furniture"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": "Sign out"
+  },
+  "statistics": "Statistics",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "yes": "Yes",
+  "@yes": {
+    "description": "Yes"
+  }
+}

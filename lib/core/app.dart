@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:movella_app/constants/colors.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/login_page.dart';
 import 'package:movella_app/core/main_page.dart';
 import 'package:movella_app/core/splash_page.dart';
-
-// TODO: welcome dialog
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -14,6 +14,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Constants.appName,
+      // locale: const Locale('pt'),
+      // locale: const Locale('en'),
+      supportedLocales: [
+        const Locale('en'),
+        const Locale('pt'),
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       theme: ThemeData(
         primarySwatch: ExtendedColors.chilledChilly,
         textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),

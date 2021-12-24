@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/splash_page.dart';
+import 'package:movella_app/utils/services/shared_preferences.dart';
+import 'package:movella_app/widgets/custom_icon.dart';
 import 'package:movella_app/widgets/custom_spacer.dart';
 
 class MainPage extends StatefulWidget {
@@ -19,64 +22,16 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 1), () async {
-      final ans = await showDialog(
-        context: context,
-        builder: (context) {
-          // return Dialog(
-          //   child: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     crossAxisAlignment: CrossAxisAlignment.stretch,
-          //     children: [
-          //       Expanded(
-          //         child: Padding(
-          //           padding: const EdgeInsets.all(8),
-          //           child: const Text('Olá', textAlign: TextAlign.center),
-          //         ),
-          //       ),
-          //       Padding(
-          //         padding: const EdgeInsets.all(8),
-          //         child: ElevatedButton(
-          //           child: const Text('Entendi'),
-          //           onPressed: () {
-          //             // TODO: fix
-          //             Navigator.of(context).pop();
-          //           },
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // );
-          return Dialog(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Expanded(
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: [
-                      const Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: const Text('Olá', textAlign: TextAlign.center),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ElevatedButton(
-                    child: const Text('Entendi', textAlign: TextAlign.center),
-                    onPressed: () {
-                      // TODO: fix
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
+      if (await Prefs.getShowWelcomeDialog) {
+        final ans = await showDialog(
+          context: context,
+          builder: (context) {
+            return const WelcomeDialogWidget();
+          },
+        );
+
+        if (ans == true) await Prefs.setShowWelcomeDialog(false);
+      }
     });
   }
 
@@ -108,15 +63,22 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   ListTile(
-                    title: const Text('Estatísticas'),
+                    title: Text(AppLocalizations.of(context)!.statistics),
                     leading: const Icon(MdiIcons.chartBar),
                     onTap: () {
                       // TODO: fix
                     },
                   ),
                   ListTile(
-                    title: const Text('Sobre a Movella'),
+                    title: Text(AppLocalizations.of(context)!.about),
                     leading: const Icon(MdiIcons.informationOutline),
+                    onTap: () {
+                      // TODO: fix
+                    },
+                  ),
+                  ListTile(
+                    title: Text(AppLocalizations.of(context)!.help),
+                    leading: const Icon(MdiIcons.help),
                     onTap: () {
                       // TODO: fix
                     },
@@ -131,21 +93,30 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
-                    child: const Text('Minha conta'),
+                    child: Text(
+                      AppLocalizations.of(context)!.myAccount,
+                      textAlign: TextAlign.center,
+                    ),
                     onPressed: () {
                       // TODO: fix
                     },
                   ),
                   const CustomSpacer(size: 8),
                   OutlinedButton(
-                    child: const Text('Meus móveis'),
+                    child: Text(
+                      AppLocalizations.of(context)!.myFurniture,
+                      textAlign: TextAlign.center,
+                    ),
                     onPressed: () {
                       // TODO: fix
                     },
                   ),
                   const CustomSpacer(size: 8),
                   TextButton(
-                    child: const Text('Sair'),
+                    child: Text(
+                      AppLocalizations.of(context)!.signOut,
+                      textAlign: TextAlign.center,
+                    ),
                     onPressed: () async {
                       // TODO: fix
                       final ans = await showDialog(
@@ -156,13 +127,13 @@ class _MainPageState extends State<MainPage> {
                             content: const Text('Deseja sair de sua conta?'),
                             actions: [
                               TextButton(
-                                child: const Text('Não'),
+                                child: Text(AppLocalizations.of(context)!.no),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
                               ),
                               TextButton(
-                                child: const Text('Sim'),
+                                child: Text(AppLocalizations.of(context)!.yes),
                                 onPressed: () {
                                   Navigator.of(context).pop(true);
                                 },
@@ -195,6 +166,82 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class WelcomeDialogWidget extends StatefulWidget {
+  const WelcomeDialogWidget({Key? key}) : super(key: key);
+
+  @override
+  _WelcomeDialogWidgetState createState() => _WelcomeDialogWidgetState();
+}
+
+class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
+  bool _checked = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    'Olá!',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ConstrainedBox(
+                    child: const CustomIcon(CustomIcons.undrawLogin),
+                    constraints: const BoxConstraints(maxHeight: 300),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      const Text('Seja bem-vindo(a) à Movella!'),
+                      const Text(''),
+                      const Text(
+                        'Aqui você pode alugar os móveis que precisa, ou colocar seus móveis para alugar e ganhar um dinheirinho extra.',
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          CheckboxListTile(
+            value: _checked,
+            title: const Text('Não mostrar novamente'),
+            onChanged: (value) {
+              setState(() {
+                _checked = !_checked;
+              });
+            },
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: ElevatedButton(
+              child: const Text('Entendi', textAlign: TextAlign.center),
+              onPressed: () {
+                Navigator.of(context).pop(_checked);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

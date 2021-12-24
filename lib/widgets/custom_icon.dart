@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum CustomIcons { movella, movellaSmall }
+enum CustomIcons { movella, movellaSmall, undrawLogin }
 
 class CustomIcon extends StatelessWidget {
   const CustomIcon(
@@ -26,5 +26,6 @@ String _resolveAssetName(CustomIcons customIcon) {
   return {
     CustomIcons.movella: 'assets/images/movella.png',
     CustomIcons.movellaSmall: 'assets/images/movellasmall.png',
+    CustomIcons.undrawLogin: 'assets/images/undraw-login.png',
   }[customIcon]!;
 }
