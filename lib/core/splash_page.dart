@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movella_app/core/login_page.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 
 class SplashPage extends StatefulWidget {
@@ -11,6 +12,15 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 1), () async {
+      await Navigator.of(context).pushReplacementNamed(LoginPage.route);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
