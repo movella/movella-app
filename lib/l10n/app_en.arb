@@ -3,9 +3,29 @@
   "@about": {
     "description": "About"
   },
+  "goodAfternoon": "Good afternoon",
+  "@goodAfternoon": {
+    "description": "Good afternoon"
+  },
+  "goodEvening": "Good evening",
+  "@goodEvening": {
+    "description": "Good evening"
+  },
+  "goodMorning": "Good morning",
+  "@goodMorning": {
+    "description": "Good morning"
+  },
+  "goToMyAccount": "Go to my account",
+  "@goToMyAccount": {
+    "description": "Go to my account"
+  },
   "help": "Help",
   "@help": {
     "description": "Help"
+  },
+  "memberSince": "Member since",
+  "@memberSince": {
+    "description": "Member since"
   },
   "myAccount": "My account",
   "@myAccount": {
@@ -19,13 +39,37 @@
   "@no": {
     "description": "No"
   },
+  "perMonth": "per month",
+  "@perMonth": {
+    "description": "per month"
+  },
+  "recommended": "Recommended",
+  "@recommended": {
+    "description": "Recommended"
+  },
+  "searchForFurniture": "Search for furniture",
+  "@searchForFurniture": {
+    "description": "Search for furniture"
+  },
   "signOut": "Sign out",
   "@signOut": {
     "description": "Sign out"
   },
+  "signOutOfAccount": "Sign out of your account?",
+  "@signOutOfAccount": {
+    "description": "Sign out of account"
+  },
+  "somethingWentWrong": "Something went wrong",
+  "@somethingWentWrong": {
+    "description": "Something went wrong"
+  },
   "statistics": "Statistics",
   "@statistics": {
     "description": "Statistics"
+  },
+  "verifyAccountMessage": "In order to put furniture to rent or rent furniture, first verify your account.",
+  "@verifyAccountMessage": {
+    "description": "Message shown in the unverifies account dismissible card"
   },
   "yes": "Yes",
   "@yes": {

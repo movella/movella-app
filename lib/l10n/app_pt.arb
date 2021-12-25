@@ -1,10 +1,21 @@
 {
   "about": "Sobre a Movella",
+  "goodAfternoon": "Boa tarde",
+  "goodEvening": "Boa noite",
+  "goodMorning": "Bom dia",
+  "goToMyAccount": "Ir para minha conta",
   "help": "Ajuda",
+  "memberSince": "Membro desde",
   "myAccount": "Minha conta",
   "myFurniture": "Meus móveis",
   "no": "No",
+  "perMonth": "por mês",
+  "recommended": "Recomendados",
+  "searchForFurniture": "rocurar móveis",
   "signOut": "Sair",
+  "signOutOfAccount": "Deseja sair de sua conta?",
+  "somethingWentWrong": "Algo deu errado",
   "statistics": "Estatísticas",
+  "verifyAccountMessage": "Para colocar para alugar ou realizar o aluguel de móveis, antes verifique sua conta.",
   "yes": "Sim"
 }
