@@ -18,6 +18,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  bool _dismissed = false;
+
   @override
   void initState() {
     super.initState();
@@ -73,8 +75,124 @@ class _MainPageState extends State<MainPage> {
                   ListTile(
                     title: Text(AppLocalizations.of(context)!.about),
                     leading: const Icon(MdiIcons.informationOutline),
-                    onTap: () {
-                      // TODO: fix
+                    onTap: () async {
+                      await showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return DraggableScrollableSheet(
+                            initialChildSize: .6,
+                            builder: (context, scrollController) {
+                              return Container(
+                                color:
+                                    Theme.of(context).scaffoldBackgroundColor,
+                                child: SafeArea(
+                                  child: ListView(
+                                    shrinkWrap: true,
+                                    controller: scrollController,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: ConstrainedBox(
+                                          child: Center(
+                                            child: Material(
+                                              elevation: 3,
+                                              clipBehavior:
+                                                  Clip.antiAliasWithSaveLayer,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                const Radius.circular(8),
+                                              ),
+                                              child: CustomIcon(
+                                                CustomIcons.movellaSmall,
+                                              ),
+                                            ),
+                                          ),
+                                          constraints: const BoxConstraints(
+                                            maxWidth: 200,
+                                            maxHeight: 200,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          AppLocalizations.of(context)!.aboutUs,
+                                          textAlign: TextAlign.center,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline6,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .aboutUsText,
+                                        ),
+                                      ),
+                                      // TODO: fix
+                                      SizedBox(
+                                        height: 400,
+                                        child: PageView(
+                                          children: List.generate(3, (index) {
+                                            return Card(
+                                              margin: const EdgeInsets.all(16),
+                                              child: Column(
+                                                children: [
+                                                  Expanded(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                        8,
+                                                      ),
+                                                      child: Image.network(
+                                                        'https://via.placeholder.com/100',
+                                                        fit: BoxFit.contain,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    child: Text(
+                                                      'Excepteur laboris et cillum culpa adipisicing amet aute nisi.',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .caption,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    child: TextButton(
+                                                      child: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .next,
+                                                      ),
+                                                      onPressed: () {
+                                                        // TODO: fix
+                                                      },
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                   ListTile(
@@ -89,15 +207,7 @@ class _MainPageState extends State<MainPage> {
                     builder: (context, snapshot) {
                       final data = snapshot.data;
 
-                      if (snapshot.hasError)
-                        return Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            AppLocalizations.of(context)!.somethingWentWrong,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                        );
+                      if (snapshot.hasError) return const CustomErrorWidget();
 
                       if (snapshot.connectionState == ConnectionState.done &&
                           data != null)
@@ -314,38 +424,76 @@ class _MainPageState extends State<MainPage> {
                     }),
                   ),
                 ),
-                Dismissible(
-                  key: const ValueKey('dismissible'),
-                  child: Card(
-                    margin: const EdgeInsets.only(
-                      top: 16,
-                      left: 16,
-                      right: 16,
-                      bottom: 8,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Text(AppLocalizations.of(context)!
-                              .verifyAccountMessage),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8),
-                            child: OutlinedButton(
-                              child: Text(
-                                AppLocalizations.of(context)!.goToMyAccount,
+                // TODO: fix
+                if (!_dismissed)
+                  Dismissible(
+                    key: const ValueKey('dismissible'),
+                    child: Card(
+                      margin: const EdgeInsets.only(
+                        top: 16,
+                        left: 16,
+                        right: 16,
+                        bottom: 8,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(AppLocalizations.of(context)!
+                                .verifyAccountMessage),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: OutlinedButton(
+                                child: Text(
+                                  AppLocalizations.of(context)!.goToMyAccount,
+                                ),
+                                onPressed: () {
+                                  // TODO: fix
+                                },
                               ),
-                              onPressed: () {
-                                // TODO: fix
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
+                    onDismissed: (direction) {
+                      setState(() {
+                        _dismissed = true;
+                      });
+                    },
                   ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 8,
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.history,
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+                // TODO: fix
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: ConstrainedBox(
+                        child: const CustomIcon(CustomIcons.undrawEmpty),
+                        constraints: const BoxConstraints(
+                          maxHeight: 200,
+                          maxWidth: 200,
+                        ),
+                      ),
+                    ),
+                    CustomErrorWidget(
+                      message: AppLocalizations.of(context)!
+                          .youHaventRentedAnyFurnitureYet,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -459,4 +607,25 @@ String _getGreetingString(BuildContext context) {
   if (hour >= 12) return AppLocalizations.of(context)!.goodAfternoon;
 
   return AppLocalizations.of(context)!.goodMorning;
+}
+
+class CustomErrorWidget extends StatelessWidget {
+  const CustomErrorWidget({
+    Key? key,
+    this.message,
+  }) : super(key: key);
+
+  final String? message;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        message ?? AppLocalizations.of(context)!.somethingWentWrong,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.caption,
+      ),
+    );
+  }
 }

@@ -1,13 +1,17 @@
 {
   "about": "Sobre a Movella",
+  "aboutUs": "Sobre nós",
+  "aboutUsText": "Fugiat enim culpa laborum dolor ex do nulla ex tempor dolor. Et aute veniam nulla incididunt incididunt esse velit veniam excepteur consequat. Voluptate aliquip eu cillum commodo elit sint Lorem labore occaecat quis. Consequat exercitation mollit tempor non aliqua id voluptate. Dolore deserunt aliquip sit eiusmod duis ad nostrud officia adipisicing quis occaecat aute velit. Ullamco ex ipsum ipsum consequat exercitation.",
   "goodAfternoon": "Boa tarde",
   "goodEvening": "Boa noite",
   "goodMorning": "Bom dia",
   "goToMyAccount": "Ir para minha conta",
   "help": "Ajuda",
+  "history": "Histórico",
   "memberSince": "Membro desde",
   "myAccount": "Minha conta",
   "myFurniture": "Meus móveis",
+  "next": "Próximo",
   "no": "No",
   "perMonth": "por mês",
   "recommended": "Recomendados",
@@ -17,5 +21,6 @@
   "somethingWentWrong": "Algo deu errado",
   "statistics": "Estatísticas",
   "verifyAccountMessage": "Para colocar para alugar ou realizar o aluguel de móveis, antes verifique sua conta.",
-  "yes": "Sim"
+  "yes": "Sim",
+  "youHaventRentedAnyFurnitureYet": "Você ainda não alugou nenhum móvel"
 }

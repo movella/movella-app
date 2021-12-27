@@ -3,6 +3,14 @@
   "@about": {
     "description": "About"
   },
+  "aboutUs": "About us",
+  "@aboutUs": {
+    "description": "About"
+  },
+  "aboutUsText": "Fugiat enim culpa laborum dolor ex do nulla ex tempor dolor. Et aute veniam nulla incididunt incididunt esse velit veniam excepteur consequat. Voluptate aliquip eu cillum commodo elit sint Lorem labore occaecat quis. Consequat exercitation mollit tempor non aliqua id voluptate. Dolore deserunt aliquip sit eiusmod duis ad nostrud officia adipisicing quis occaecat aute velit. Ullamco ex ipsum ipsum consequat exercitation.",
+  "@aboutUsText": {
+    "description": "About us"
+  },
   "goodAfternoon": "Good afternoon",
   "@goodAfternoon": {
     "description": "Good afternoon"
@@ -23,6 +31,10 @@
   "@help": {
     "description": "Help"
   },
+  "history": "History",
+  "@history": {
+    "description": "History"
+  },
   "memberSince": "Member since",
   "@memberSince": {
     "description": "Member since"
@@ -34,6 +46,10 @@
   "myFurniture": "My furniture",
   "@myFurniture": {
     "description": "My furniture"
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Next"
   },
   "no": "No",
   "@no": {
@@ -74,5 +90,9 @@
   "yes": "Yes",
   "@yes": {
     "description": "Yes"
+  },
+  "youHaventRentedAnyFurnitureYet": "You haven't rented any furniture yet",
+  "@youHaventRentedAnyFurnitureYet": {
+    "description": "You haven't rented any furniture yet"
   }
 }

@@ -36,7 +36,9 @@
 * version info
 * drawer info (missing)
 * statistics (missing)
-* about (missing)
+* about
+* about info (missing)
+* about slider (missing)
 * help (missing)
 * my account (missing)
 * my furniture (missing)
