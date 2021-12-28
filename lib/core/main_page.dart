@@ -145,8 +145,7 @@ class _MainPageState extends State<MainPage> {
                                                     child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
-                                                        8,
-                                                      ),
+                                                              8),
                                                       child: Image.network(
                                                         'https://via.placeholder.com/100',
                                                         fit: BoxFit.contain,
