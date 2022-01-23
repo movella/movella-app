@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/splash_page.dart';
+import 'package:movella_app/modules/search_page.dart';
+import 'package:movella_app/providers/app_provider.dart';
+import 'package:movella_app/utils/services/localization.dart';
 import 'package:movella_app/utils/services/shared_preferences.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 import 'package:movella_app/widgets/custom_spacer.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -33,7 +36,9 @@ class _MainPageState extends State<MainPage> {
           },
         );
 
-        if (ans == true) await Prefs.setShowWelcomeDialog(false);
+        if (ans == true) {
+          await Prefs.setShowWelcomeDialog(false);
+        }
       }
     });
   }
@@ -41,7 +46,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(Constants.appName)),
+      appBar: AppBar(title: const Text(Constants.appName)),
       drawer: Drawer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -50,30 +55,37 @@ class _MainPageState extends State<MainPage> {
               child: ListView(
                 children: [
                   DrawerHeader(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const Text('Usuário'),
-                        Text(
-                          '3 aluguéis realizados',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                        Text(
-                          '${AppLocalizations.of(context)!.memberSince} 12/12/2021',
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ],
+                    child: Consumer<AppProvider>(
+                      builder: (context, value, child) {
+                        final user = value.user;
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Text(user?.username ?? ''),
+                            Text(
+                              // TODO: fix
+                              '3 aluguéis realizados',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                            Text(
+                              '${Localization.localize(context).memberSince} 12/12/2021',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                          ],
+                        );
+                      },
                     ),
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.statistics),
+                    title: Text(Localization.localize(context).statistics),
                     leading: const Icon(MdiIcons.chartBar),
                     onTap: () {
                       // TODO: fix
                     },
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.about),
+                    title: Text(Localization.localize(context).about),
                     leading: const Icon(MdiIcons.informationOutline),
                     onTap: () async {
                       await showModalBottomSheet(
@@ -95,14 +107,13 @@ class _MainPageState extends State<MainPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(16),
                                         child: ConstrainedBox(
-                                          child: Center(
+                                          child: const Center(
                                             child: Material(
                                               elevation: 3,
                                               clipBehavior:
                                                   Clip.antiAliasWithSaveLayer,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                const Radius.circular(8),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(8),
                                               ),
                                               child: CustomIcon(
                                                 CustomIcons.movellaSmall,
@@ -118,7 +129,8 @@ class _MainPageState extends State<MainPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(16),
                                         child: Text(
-                                          AppLocalizations.of(context)!.aboutUs,
+                                          Localization.localize(context)
+                                              .aboutUs,
                                           textAlign: TextAlign.center,
                                           style: Theme.of(context)
                                               .textTheme
@@ -128,7 +140,7 @@ class _MainPageState extends State<MainPage> {
                                       Padding(
                                         padding: const EdgeInsets.all(16),
                                         child: Text(
-                                          AppLocalizations.of(context)!
+                                          Localization.localize(context)
                                               .aboutUsText,
                                         ),
                                       ),
@@ -148,6 +160,7 @@ class _MainPageState extends State<MainPage> {
                                                         8,
                                                       ),
                                                       child: Image.network(
+                                                        // TODO: fix
                                                         'https://via.placeholder.com/100',
                                                         fit: BoxFit.contain,
                                                       ),
@@ -157,6 +170,7 @@ class _MainPageState extends State<MainPage> {
                                                     padding:
                                                         const EdgeInsets.all(8),
                                                     child: Text(
+                                                      // TODO: fix
                                                       'Excepteur laboris et cillum culpa adipisicing amet aute nisi.',
                                                       textAlign:
                                                           TextAlign.center,
@@ -170,8 +184,8 @@ class _MainPageState extends State<MainPage> {
                                                         const EdgeInsets.all(8),
                                                     child: TextButton(
                                                       child: Text(
-                                                        AppLocalizations.of(
-                                                                context)!
+                                                        Localization.localize(
+                                                                context)
                                                             .next,
                                                       ),
                                                       onPressed: () {
@@ -196,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                     },
                   ),
                   ListTile(
-                    title: Text(AppLocalizations.of(context)!.help),
+                    title: Text(Localization.localize(context).help),
                     leading: const Icon(MdiIcons.help),
                     onTap: () {
                       // TODO: fix
@@ -210,7 +224,7 @@ class _MainPageState extends State<MainPage> {
                       if (snapshot.hasError) return const CustomErrorWidget();
 
                       if (snapshot.connectionState == ConnectionState.done &&
-                          data != null)
+                          data != null) {
                         return Padding(
                           padding: const EdgeInsets.all(8),
                           child: Column(
@@ -230,12 +244,11 @@ class _MainPageState extends State<MainPage> {
                             ],
                           ),
                         );
+                      }
 
-                      return Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: const Center(
-                          child: const CircularProgressIndicator(),
-                        ),
+                      return const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Center(child: CircularProgressIndicator()),
                       );
                     },
                   ),
@@ -250,7 +263,7 @@ class _MainPageState extends State<MainPage> {
                 children: [
                   ElevatedButton(
                     child: Text(
-                      AppLocalizations.of(context)!.myAccount,
+                      Localization.localize(context).myAccount,
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () {
@@ -260,7 +273,7 @@ class _MainPageState extends State<MainPage> {
                   const CustomSpacer(size: 8),
                   OutlinedButton(
                     child: Text(
-                      AppLocalizations.of(context)!.myFurniture,
+                      Localization.localize(context).myFurniture,
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () {
@@ -270,7 +283,7 @@ class _MainPageState extends State<MainPage> {
                   const CustomSpacer(size: 8),
                   TextButton(
                     child: Text(
-                      AppLocalizations.of(context)!.signOut,
+                      Localization.localize(context).signOut,
                       textAlign: TextAlign.center,
                     ),
                     onPressed: () async {
@@ -279,19 +292,19 @@ class _MainPageState extends State<MainPage> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text(AppLocalizations.of(context)!.signOut),
+                            title: Text(Localization.localize(context).signOut),
                             content: Text(
-                              AppLocalizations.of(context)!.signOutOfAccount,
+                              Localization.localize(context).signOutOfAccount,
                             ),
                             actions: [
                               TextButton(
-                                child: Text(AppLocalizations.of(context)!.no),
+                                child: Text(Localization.localize(context).no),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
                               ),
                               TextButton(
-                                child: Text(AppLocalizations.of(context)!.yes),
+                                child: Text(Localization.localize(context).yes),
                                 onPressed: () {
                                   Navigator.of(context).pop(true);
                                 },
@@ -301,9 +314,10 @@ class _MainPageState extends State<MainPage> {
                         },
                       );
 
-                      if (mounted && ans == true)
+                      if (mounted && ans == true) {
                         Navigator.of(context)
                             .pushReplacementNamed(SplashPage.route);
+                      }
                     },
                   ),
                 ],
@@ -322,14 +336,14 @@ class _MainPageState extends State<MainPage> {
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    '${_getGreetingString(context)}, Usuário!',
+                    '${_getGreetingString(context)}, ${Provider.of<AppProvider>(context).user?.username}!',
                     style: Theme.of(context).textTheme.headline6,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    AppLocalizations.of(context)!.recommended,
+                    Localization.localize(context).recommended,
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
@@ -350,6 +364,7 @@ class _MainPageState extends State<MainPage> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Image.network(
+                                  // TODO: fix
                                   'https://via.placeholder.com/100',
                                   fit: BoxFit.cover,
                                   height: 100,
@@ -380,7 +395,7 @@ class _MainPageState extends State<MainPage> {
                                             TextSpan(
                                               // TODO: fix
                                               text:
-                                                  ' ${AppLocalizations.of(context)!.perMonth}',
+                                                  ' ${Localization.localize(context).perMonth}',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .caption
@@ -410,9 +425,9 @@ class _MainPageState extends State<MainPage> {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.stretch,
-                                    children: [
+                                    children: const [
                                       // TODO: fix
-                                      const Text('Usuário 2'),
+                                      Text('Usuário 2'),
                                     ],
                                   ),
                                 ),
@@ -441,13 +456,13 @@ class _MainPageState extends State<MainPage> {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(AppLocalizations.of(context)!
+                            Text(Localization.localize(context)
                                 .verifyAccountMessage),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: OutlinedButton(
                                 child: Text(
-                                  AppLocalizations.of(context)!.goToMyAccount,
+                                  Localization.localize(context).goToMyAccount,
                                 ),
                                 onPressed: () {
                                   // TODO: fix
@@ -471,7 +486,7 @@ class _MainPageState extends State<MainPage> {
                     right: 16,
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.history,
+                    Localization.localize(context).history,
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
@@ -490,7 +505,7 @@ class _MainPageState extends State<MainPage> {
                       ),
                     ),
                     CustomErrorWidget(
-                      message: AppLocalizations.of(context)!
+                      message: Localization.localize(context)
                           .youHaventRentedAnyFurnitureYet,
                     ),
                   ],
@@ -505,17 +520,18 @@ class _MainPageState extends State<MainPage> {
                     child: ElevatedButton.icon(
                       icon: const Icon(MdiIcons.magnify),
                       label: Text(
-                        AppLocalizations.of(context)!.searchForFurniture,
+                        Localization.localize(context).searchForFurniture,
                         textAlign: TextAlign.center,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         // TODO: fix
+                        await Navigator.of(context).pushNamed(SearchPage.route);
                       },
                     ),
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -547,7 +563,7 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
-                    'Olá!',
+                    Localization.localize(context).helloThere,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headline6,
                   ),
@@ -563,10 +579,11 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text('Seja bem-vindo(a) à Movella!'),
-                      const Text(''),
-                      const Text(
+                    children: const [
+                      // TODO: fix
+                      Text('Seja bem-vindo(a) à Movella!'),
+                      Text(''),
+                      Text(
                         'Aqui você pode alugar os móveis que precisa, ou colocar seus móveis para alugar e ganhar um dinheirinho extra.',
                       ),
                     ],
@@ -577,6 +594,7 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
           ),
           CheckboxListTile(
             value: _checked,
+            // TODO: fix
             title: const Text('Não mostrar novamente'),
             onChanged: (value) {
               setState(() {
@@ -587,6 +605,7 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
           Padding(
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
+              // TODO: fix
               child: const Text('Entendi', textAlign: TextAlign.center),
               onPressed: () {
                 Navigator.of(context).pop(_checked);
@@ -602,11 +621,11 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
 String _getGreetingString(BuildContext context) {
   final hour = DateTime.now().hour;
 
-  if (hour >= 18) return AppLocalizations.of(context)!.goodEvening;
+  if (hour >= 18) return Localization.localize(context).goodEvening;
 
-  if (hour >= 12) return AppLocalizations.of(context)!.goodAfternoon;
+  if (hour >= 12) return Localization.localize(context).goodAfternoon;
 
-  return AppLocalizations.of(context)!.goodMorning;
+  return Localization.localize(context).goodMorning;
 }
 
 class CustomErrorWidget extends StatelessWidget {
@@ -622,7 +641,7 @@ class CustomErrorWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: Text(
-        message ?? AppLocalizations.of(context)!.somethingWentWrong,
+        message ?? Localization.localize(context).somethingWentWrong,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.caption,
       ),

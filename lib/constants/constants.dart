@@ -1,3 +1,3 @@
 class Constants {
-  static final appName = 'Movella';
+  static const appName = 'Movella';
 }

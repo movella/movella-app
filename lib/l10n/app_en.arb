@@ -11,6 +11,10 @@
   "@aboutUsText": {
     "description": "About us"
   },
+  "email": "Email",
+  "@email": {
+    "description": "Email"
+  },
   "goodAfternoon": "Good afternoon",
   "@goodAfternoon": {
     "description": "Good afternoon"
@@ -27,6 +31,10 @@
   "@goToMyAccount": {
     "description": "Go to my account"
   },
+  "helloThere": "Hello there!",
+  "@helloThere": {
+    "description": "Hello there!"
+  },
   "help": "Help",
   "@help": {
     "description": "Help"
@@ -34,6 +42,26 @@
   "history": "History",
   "@history": {
     "description": "History"
+  },
+  "iDontHaveAnAccount": "I don't have an account",
+  "@iDontHaveAnAccount": {
+    "description": "I don't have an account"
+  },
+  "invalidEmail": "Invalid email",
+  "@invalidEmail": {
+    "description": "Invalid email"
+  },
+  "invalidPassword": "Invalid password",
+  "@invalidPassword": {
+    "description": "Invalid password"
+  },
+  "login": "Log in",
+  "@login": {
+    "description": "Log in"
+  },
+  "loginMessage": "Log in to continue",
+  "@loginMessage": {
+    "description": "Log in to continue"
   },
   "memberSince": "Member since",
   "@memberSince": {
@@ -54,6 +82,10 @@
   "no": "No",
   "@no": {
     "description": "No"
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Password"
   },
   "perMonth": "per month",
   "@perMonth": {
