@@ -5,6 +5,7 @@ import 'package:movella_app/constants/colors.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/login_page.dart';
 import 'package:movella_app/core/main_page.dart';
+import 'package:movella_app/core/register_page.dart';
 import 'package:movella_app/core/splash_page.dart';
 import 'package:movella_app/modules/search_page.dart';
 import 'package:movella_app/providers/app_provider.dart';
@@ -61,6 +62,7 @@ class App extends StatelessWidget {
           LoginPage.route: (context) => const LoginPage(),
           MainPage.route: (context) => const MainPage(),
           SearchPage.route: (context) => const SearchPage(),
+          RegisterPage.route: (context) => const RegisterPage(),
         },
       ),
     );

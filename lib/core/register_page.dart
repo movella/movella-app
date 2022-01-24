@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:movella_app/core/main_page.dart';
-import 'package:movella_app/core/register_page.dart';
 import 'package:movella_app/exceptions/invalid_request_exception.dart';
+import 'package:movella_app/extensions/navigator_state_extension.dart';
 import 'package:movella_app/models/user.dart';
 import 'package:movella_app/providers/app_provider.dart';
 import 'package:movella_app/utils/services/localization.dart';
@@ -10,38 +10,47 @@ import 'package:movella_app/utils/services/shared_preferences.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 import 'package:movella_app/widgets/email_text_form_field.dart';
 import 'package:movella_app/widgets/password_text_form_field.dart';
+import 'package:movella_app/widgets/username_text_form_field.dart';
 import 'package:provider/provider.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key}) : super(key: key);
 
-  static const route = 'login';
+  static const route = 'register';
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _usernameController = TextEditingController();
 
   final _emailFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
+  final _usernameFocusNode = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> _login() async {
+  void _goBack() {
+    Navigator.of(context).safePop();
+  }
+
+  Future<void> _register() async {
     if (_formKey.currentState?.validate() != true) {
       return;
     }
 
+    final username = _usernameController.text;
     final email = _emailController.text;
     final password = _passwordController.text;
 
     try {
-      final loginResponse = await User.login(
+      final registerResponse = await User.register(
         email: email,
         password: password,
+        username: username,
       );
 
       if (!mounted) return;
@@ -50,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
 
-      Provider.of<AppProvider>(context, listen: false).user = loginResponse;
+      Provider.of<AppProvider>(context, listen: false).user = registerResponse;
 
       Navigator.of(context).pushReplacementNamed(MainPage.route);
     } on InvalidRequestException catch (e) {
@@ -64,19 +73,6 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(Localization.localize(context).somethingWentWrong)));
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero, () async {
-      final autoEmail = await Prefs.getAutoEmail;
-
-      if (autoEmail != null) {
-        _emailController.text = autoEmail;
-      }
-    });
   }
 
   @override
@@ -118,13 +114,14 @@ class _LoginPageState extends State<LoginPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                Localization.localize(context).helloThere,
+                                Localization.localize(context).noAccountMessage,
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline4
                                     ?.copyWith(color: Colors.black),
                               ),
-                              Text(Localization.localize(context).loginMessage),
+                              Text(Localization.localize(context)
+                                  .registerMessage),
                             ],
                           ),
                         ),
@@ -140,6 +137,10 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
+                                UsernameTextFormField(
+                                  focusNode: _usernameFocusNode,
+                                  controller: _usernameController,
+                                ),
                                 EmailTextFormField(
                                   focusNode: _emailFocusNode,
                                   controller: _emailController,
@@ -151,9 +152,10 @@ class _LoginPageState extends State<LoginPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 32),
                                   child: ElevatedButton(
-                                    onPressed: _login,
+                                    onPressed: _register,
                                     child: Text(
-                                      Localization.localize(context).login,
+                                      Localization.localize(context)
+                                          .createAccount,
                                       textAlign: TextAlign.center,
                                     ),
                                   ),
@@ -161,15 +163,11 @@ class _LoginPageState extends State<LoginPage> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 16),
                                   child: OutlinedButton(
+                                    onPressed: _goBack,
                                     child: Text(
-                                      Localization.localize(context)
-                                          .iDontHaveAnAccount,
+                                      Localization.localize(context).goBack,
                                       textAlign: TextAlign.center,
                                     ),
-                                    onPressed: () async {
-                                      await Navigator.of(context)
-                                          .pushNamed(RegisterPage.route);
-                                    },
                                   ),
                                 ),
                               ],

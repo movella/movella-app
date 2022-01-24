@@ -11,6 +11,14 @@
   "@aboutUsText": {
     "description": "About us"
   },
+  "createAccount": "Create account",
+  "@createAccount": {
+    "description": "Create account"
+  },
+  "dontShowAgain": "Don't show again",
+  "@dontShowAgain": {
+    "description": "Don't show again"
+  },
   "email": "Email",
   "@email": {
     "description": "Email"
@@ -26,6 +34,14 @@
   "goodMorning": "Good morning",
   "@goodMorning": {
     "description": "Good morning"
+  },
+  "goBack": "Go back",
+  "@goBack": {
+    "description": "Go back"
+  },
+  "gotIt": "Got it",
+  "@gotIt": {
+    "description": "Got it"
   },
   "goToMyAccount": "Go to my account",
   "@goToMyAccount": {
@@ -53,6 +69,10 @@
   },
   "invalidPassword": "Invalid password",
   "@invalidPassword": {
+    "description": "Invalid password"
+  },
+  "invalidUsername": "Invalid username",
+  "@invalidUsername": {
     "description": "Invalid password"
   },
   "login": "Log in",
@@ -83,6 +103,10 @@
   "@no": {
     "description": "No"
   },
+  "noAccountMessage": "Don't have an account?",
+  "@noAccountMessage": {
+    "description": "Don't have an account?"
+  },
   "password": "Password",
   "@password": {
     "description": "Password"
@@ -94,6 +118,10 @@
   "recommended": "Recommended",
   "@recommended": {
     "description": "Recommended"
+  },
+  "registerMessage": "Create one!",
+  "@registerMessage": {
+    "description": "Create one!"
   },
   "searchForFurniture": "Search for furniture",
   "@searchForFurniture": {
@@ -115,9 +143,21 @@
   "@statistics": {
     "description": "Statistics"
   },
+  "username": "Username",
+  "@username": {
+    "description": "Username"
+  },
   "verifyAccountMessage": "In order to put furniture to rent or rent furniture, first verify your account.",
   "@verifyAccountMessage": {
     "description": "Message shown in the unverifies account dismissible card"
+  },
+  "welcomeDialogMessage": "Welcome to Movella!",
+  "@welcomeDialogMessage": {
+    "description": "Welcome to Movella!"
+  },
+  "welcomeDialogText": "Here you can rent the furniture that you need, or put them for rent and get a little extra cash.",
+  "@welcomeDialogText": {
+    "description": "Welcome dialog text"
   },
   "yes": "Yes",
   "@yes": {

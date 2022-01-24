@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/splash_page.dart';
+import 'package:movella_app/extensions/navigator_state_extension.dart';
 import 'package:movella_app/modules/search_page.dart';
 import 'package:movella_app/providers/app_provider.dart';
 import 'package:movella_app/utils/services/localization.dart';
 import 'package:movella_app/utils/services/shared_preferences.dart';
+import 'package:movella_app/widgets/custom_error_widget.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 import 'package:movella_app/widgets/custom_spacer.dart';
 import 'package:package_info/package_info.dart';
@@ -22,6 +24,42 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   bool _dismissed = false;
+
+  Future<void> _signOut() async {
+    final ans = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(Localization.localize(context).signOut),
+          content: Text(
+            Localization.localize(context).signOutOfAccount,
+          ),
+          actions: [
+            TextButton(
+              child: Text(Localization.localize(context).no),
+              onPressed: () {
+                Navigator.of(context).safePop();
+              },
+            ),
+            TextButton(
+              child: Text(Localization.localize(context).yes),
+              onPressed: () {
+                Navigator.of(context).safePop(true);
+              },
+            ),
+          ],
+        );
+      },
+    );
+
+    if (mounted && ans == true) {
+      await Prefs.setAuthorization(null);
+
+      if (!mounted) return;
+
+      await Navigator.of(context).pushReplacementNamed(SplashPage.route);
+    }
+  }
 
   @override
   void initState() {
@@ -282,43 +320,11 @@ class _MainPageState extends State<MainPage> {
                   ),
                   const CustomSpacer(size: 8),
                   TextButton(
+                    onPressed: _signOut,
                     child: Text(
                       Localization.localize(context).signOut,
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () async {
-                      // TODO: fix
-                      final ans = await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text(Localization.localize(context).signOut),
-                            content: Text(
-                              Localization.localize(context).signOutOfAccount,
-                            ),
-                            actions: [
-                              TextButton(
-                                child: Text(Localization.localize(context).no),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                              TextButton(
-                                child: Text(Localization.localize(context).yes),
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (mounted && ans == true) {
-                        Navigator.of(context)
-                            .pushReplacementNamed(SplashPage.route);
-                      }
-                    },
                   ),
                 ],
               ),
@@ -579,13 +585,10 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: const [
-                      // TODO: fix
-                      Text('Seja bem-vindo(a) à Movella!'),
-                      Text(''),
-                      Text(
-                        'Aqui você pode alugar os móveis que precisa, ou colocar seus móveis para alugar e ganhar um dinheirinho extra.',
-                      ),
+                    children: [
+                      Text(Localization.localize(context).welcomeDialogMessage),
+                      const Text(''),
+                      Text(Localization.localize(context).welcomeDialogText),
                     ],
                   ),
                 ),
@@ -594,8 +597,7 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
           ),
           CheckboxListTile(
             value: _checked,
-            // TODO: fix
-            title: const Text('Não mostrar novamente'),
+            title: Text(Localization.localize(context).dontShowAgain),
             onChanged: (value) {
               setState(() {
                 _checked = !_checked;
@@ -605,10 +607,12 @@ class _WelcomeDialogWidgetState extends State<WelcomeDialogWidget> {
           Padding(
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
-              // TODO: fix
-              child: const Text('Entendi', textAlign: TextAlign.center),
+              child: Text(
+                Localization.localize(context).gotIt,
+                textAlign: TextAlign.center,
+              ),
               onPressed: () {
-                Navigator.of(context).pop(_checked);
+                Navigator.of(context).safePop(_checked);
               },
             ),
           ),
@@ -626,25 +630,4 @@ String _getGreetingString(BuildContext context) {
   if (hour >= 12) return Localization.localize(context).goodAfternoon;
 
   return Localization.localize(context).goodMorning;
-}
-
-class CustomErrorWidget extends StatelessWidget {
-  const CustomErrorWidget({
-    Key? key,
-    this.message,
-  }) : super(key: key);
-
-  final String? message;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8),
-      child: Text(
-        message ?? Localization.localize(context).somethingWentWrong,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.caption,
-      ),
-    );
-  }
 }

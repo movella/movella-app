@@ -49,9 +49,9 @@ class Api {
   }
 
   static Future post(
-    String uri,
-    Map<String, dynamic> body,
-  ) async {
+    String uri, [
+    Map<String, dynamic>? body = const {},
+  ]) async {
     final headers = await getHeaders;
 
     final response = await http.post(
