@@ -7,6 +7,8 @@ import 'package:movella_app/core/login_page.dart';
 import 'package:movella_app/core/main_page.dart';
 import 'package:movella_app/core/register_page.dart';
 import 'package:movella_app/core/splash_page.dart';
+import 'package:movella_app/modules/my_account_page.dart';
+import 'package:movella_app/modules/my_furniture_page.dart';
 import 'package:movella_app/modules/search_page.dart';
 import 'package:movella_app/providers/app_provider.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +65,8 @@ class App extends StatelessWidget {
           MainPage.route: (context) => const MainPage(),
           SearchPage.route: (context) => const SearchPage(),
           RegisterPage.route: (context) => const RegisterPage(),
+          MyFurniturePage.route: (context) => const MyFurniturePage(),
+          MyAccountPage.route: (context) => const MyAccountPage(),
         },
       ),
     );

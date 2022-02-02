@@ -1,17 +1,25 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/core/splash_page.dart';
 import 'package:movella_app/extensions/navigator_state_extension.dart';
+import 'package:movella_app/modules/my_account_page.dart';
+import 'package:movella_app/modules/my_furniture_page.dart';
 import 'package:movella_app/modules/search_page.dart';
 import 'package:movella_app/providers/app_provider.dart';
 import 'package:movella_app/utils/services/localization.dart';
+import 'package:movella_app/utils/services/networking.dart';
 import 'package:movella_app/utils/services/shared_preferences.dart';
+import 'package:movella_app/utils/services/socket_io.dart';
 import 'package:movella_app/widgets/custom_error_widget.dart';
 import 'package:movella_app/widgets/custom_icon.dart';
 import 'package:movella_app/widgets/custom_spacer.dart';
+import 'package:movella_app/widgets/no_furniture_rented_widget.dart';
+import 'package:movella_app/widgets/verify_account_dismissible.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -23,7 +31,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  bool _dismissed = false;
+  io.Socket? _socket;
+
+  Future<void> _myFurniture() async {
+    await Navigator.of(context).pushNamed(MyFurniturePage.route);
+  }
+
+  Future<void> _myAccount() async {
+    await Navigator.of(context).pushNamed(MyAccountPage.route);
+  }
 
   Future<void> _signOut() async {
     final ans = await showDialog(
@@ -52,7 +68,9 @@ class _MainPageState extends State<MainPage> {
       },
     );
 
-    if (mounted && ans == true) {
+    if (!mounted) return;
+
+    if (ans == true) {
       await Prefs.setAuthorization(null);
 
       if (!mounted) return;
@@ -61,11 +79,56 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
+  Future<void> _setupSocket() async {
+    const authority = Constants.authority;
+
+    _socket?.clearListeners();
+
+    final socket = io.io(
+      'http://$authority',
+      io.OptionBuilder()
+          .setTransports(['websocket'])
+          .setExtraHeaders(await Api.getHeaders)
+          .build(),
+    );
+
+    socket.onConnectError((data) {
+      if (kDebugMode) {
+        print(data);
+      }
+    });
+
+    socket.onError((data) {
+      if (kDebugMode) {
+        print(data);
+      }
+    });
+
+    socket.onConnect((data) {
+      if (kDebugMode) {
+        print('socket connected');
+      }
+
+      _socket?.emitWithAck(SocketEvents.recommended, {}, ack: (dynamic data) {
+        // TODO: fix
+        if (kDebugMode) {
+          print(data);
+        }
+      });
+    });
+
+    setState(() {
+      _socket = socket;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
 
     Future.delayed(const Duration(seconds: 1), () async {
+      _setupSocket();
+
       if (await Prefs.getShowWelcomeDialog) {
         final ans = await showDialog(
           context: context,
@@ -79,6 +142,13 @@ class _MainPageState extends State<MainPage> {
         }
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _socket?.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -108,6 +178,11 @@ class _MainPageState extends State<MainPage> {
                             ),
                             Text(
                               '${Localization.localize(context).memberSince} 12/12/2021',
+                              style: Theme.of(context).textTheme.caption,
+                            ),
+                            Text(
+                              // TODO: fix
+                              user?.access ?? '',
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],
@@ -300,23 +375,19 @@ class _MainPageState extends State<MainPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   ElevatedButton(
+                    onPressed: _myAccount,
                     child: Text(
                       Localization.localize(context).myAccount,
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () {
-                      // TODO: fix
-                    },
                   ),
                   const CustomSpacer(size: 8),
                   OutlinedButton(
+                    onPressed: _myFurniture,
                     child: Text(
                       Localization.localize(context).myFurniture,
                       textAlign: TextAlign.center,
                     ),
-                    onPressed: () {
-                      // TODO: fix
-                    },
                   ),
                   const CustomSpacer(size: 8),
                   TextButton(
@@ -445,46 +516,7 @@ class _MainPageState extends State<MainPage> {
                     }),
                   ),
                 ),
-                // TODO: fix
-                if (!_dismissed)
-                  Dismissible(
-                    key: const ValueKey('dismissible'),
-                    child: Card(
-                      margin: const EdgeInsets.only(
-                        top: 16,
-                        left: 16,
-                        right: 16,
-                        bottom: 8,
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(Localization.localize(context)
-                                .verifyAccountMessage),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8),
-                              child: OutlinedButton(
-                                child: Text(
-                                  Localization.localize(context).goToMyAccount,
-                                ),
-                                onPressed: () {
-                                  // TODO: fix
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    onDismissed: (direction) {
-                      setState(() {
-                        _dismissed = true;
-                      });
-                    },
-                  ),
+                VerifyAccountDismissable(myAccount: _myAccount),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 8,
@@ -496,26 +528,7 @@ class _MainPageState extends State<MainPage> {
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
-                // TODO: fix
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ConstrainedBox(
-                        child: const CustomIcon(CustomIcons.undrawEmpty),
-                        constraints: const BoxConstraints(
-                          maxHeight: 200,
-                          maxWidth: 200,
-                        ),
-                      ),
-                    ),
-                    CustomErrorWidget(
-                      message: Localization.localize(context)
-                          .youHaventRentedAnyFurnitureYet,
-                    ),
-                  ],
-                ),
+                const NoFurnitureRentedWidget(),
               ],
             ),
             Row(

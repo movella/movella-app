@@ -3,10 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:movella_app/constants/constants.dart';
 import 'package:movella_app/exceptions/invalid_request_exception.dart';
 import 'package:movella_app/utils/services/shared_preferences.dart';
-
-const host = '192.168.15.35:4001';
 
 class Api {
   static String get _path => '/api/';
@@ -15,7 +14,7 @@ class Api {
     String uri, [
     Map<String, dynamic>? query,
   ]) {
-    return Uri.http(host, '$_path$uri', query);
+    return Uri.http(Constants.authority, '$_path$uri', query);
   }
 
   static Future<Map<String, String>> get getHeaders async {

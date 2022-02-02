@@ -40,5 +40,6 @@
   "welcomeDialogMessage": "Seja bem-vindo(a) à Movella!",
   "welcomeDialogText": "Aqui você pode alugar os móveis que precisa, ou colocar seus móveis para alugar e ganhar um dinheirinho extra.",
   "yes": "Sim",
+  "youHaventPutAnyFurnitureForRentYet": "Vocâ ainda não colocou nenhum móvel para aluguel",
   "youHaventRentedAnyFurnitureYet": "Você ainda não alugou nenhum móvel"
 }

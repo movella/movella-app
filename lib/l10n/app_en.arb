@@ -163,6 +163,10 @@
   "@yes": {
     "description": "Yes"
   },
+  "youHaventPutAnyFurnitureForRentYet": "You haven't put any furniture for rent yet",
+  "@youHaventPutAnyFurnitureForRentYet": {
+    "description": "You haven't put any furniture for rent yet"
+  },
   "youHaventRentedAnyFurnitureYet": "You haven't rented any furniture yet",
   "@youHaventRentedAnyFurnitureYet": {
     "description": "You haven't rented any furniture yet"
